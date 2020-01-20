@@ -1,4 +1,4 @@
-name 'node_sample'
+name 'nodejs-app'
 maintainer 'The Authors'
 maintainer_email 'you@example.com'
 license 'All Rights Reserved'

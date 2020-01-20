@@ -30,7 +30,13 @@ end
 
 #npm installs
 
-
+remote_directory '/home/ubuntu/app' do
+source 'app'
+owner 'root'
+group 'root'
+mode '0777'
+action :create
+end
 #creating a resource template
 template '/etc/nginx/sites-available/proxy.conf' do
   source 'proxy.conf.erb'
