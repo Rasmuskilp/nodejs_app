@@ -1,0 +1,17 @@
+
+   { "type": "shell", "inline": [ "mkdir -p {{user `chef_dir`}}" ] },
+   { "type": "file",  "source": "./roles",        "destination": "{{user `chef_dir`}}" },
+   { "type": "file",  "source": "./cookbooks",    "destination": "{{user `chef_dir`}}" },
+   { "type": "file",  "source": "./data_bags",    "destination": "{{user `chef_dir`}}" },
+   { "type": "file",  "source": "./environments", "destination": "{{user `chef_dir`}}" },
+   { "type": "file",  "source": "./scripts/install_chef.sh", "destination": "{{user `chef_dir`}}/install_chef.sh" },
+   {
+     "type":              "chef-client",
+     "install_command":   "sudo bash {{user `chef_dir`}}/install_chef.sh",
+     "server_url":        "http://localhost:80",
+     "config_template":   "./config/client.rb.template",
+     "run_list":          [ "role[testing]" ],
+     "skip_clean_node":   true,
+     "skip_clean_client": true
+   }
+ ]

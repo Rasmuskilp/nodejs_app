@@ -6,6 +6,7 @@ driver:
   instance_type: t2.micro
   #deploy to devopsstudent subnet
   subnet_id: subnet-0e9b6138ff1ce18f2
+  security_group_ids: sg-094a8d4a3db68c8a0
   bind_ip: true
   #aws_ssh_key_id: rasmus_kilp_eng48_first_key
   associate_public_ip: true
