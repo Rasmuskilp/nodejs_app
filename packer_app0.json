@@ -1,0 +1,53 @@
+{
+  "variables": {
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_KEY_ID`}}"
+  },
+  "builders": [{
+    "type": "amazon-ebs",
+    "access_key": "{{user `aws_access_key`}}",
+    "secret_key": "{{user `aws_secret_key`}}",
+    "subnet_id": "subnet-05f17c9de25b45b3a",
+    "associate_public_ip_address": "true",
+    "ssh_keypair_name": "rasmus_kilp_eng48_first_key",
+    "ssh_private_key_file": "~/.ssh/rasmus_kilp_eng48_first_key.pem",
+    "region": "eu-west-1",
+    "source_ami_filter": {
+      "filters": {
+        "virtualization-type": "hvm",
+        "name": "*ubuntu-bionic-18.04-amd64-server-*",
+        "root-device-type": "ebs"
+      },
+      "owners": ["099720109477"],
+      "most_recent": true
+    },
+    "instance_type": "t2.micro",
+    "ssh_username": "ubuntu",
+    "ami_name": "rasmus-kilp-nodejs-nginx-app-{{timestamp}}"
+  }],
+  "provisioners": [
+      {
+    "type": "chef-solo",
+    "cookbook_paths": ["./berks-cookbooks"],
+    "run_list": ["nodejs-app::default"]
+  },
+  {
+    "type": "chef-solo",
+    "cookbook_paths": ["./berks-cookbooks/filebeat/berks-cookbooks"],
+    "run_list": ["filebeat::default"]
+    },
+  {
+    "type": "shell",
+    "inline": ["mkdir /home/ubuntu/appjs"]
+  },
+  {
+    "type": "file",
+    "source": "app/",
+    "destination": "/home/ubuntu/appjs"
+  },
+  {
+    "type": "shell",
+    "inline": ["cd /home/ubuntu/appjs", "sudo npm install"]
+  }
+]
+}
